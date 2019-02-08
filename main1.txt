@@ -1,0 +1,10 @@
+Public renew As Variant
+
+Sub main1()
+
+Call GetNum
+Call Placement
+
+
+
+End Sub

@@ -1,0 +1,40 @@
+Sub Placement()
+
+Dim ws As Worksheet
+Dim i, pos, pos1 As Integer
+Set ws = Sheet1
+
+'Clearing the contents from the previous populate
+Range("A11:B49").ClearContents
+
+'creating a variable from the pulled data
+renew = Cells(1, 1)
+
+'initial split to remove the beginning of the initial pulled string
+renew = Split(renew, ":{")
+renew1 = renew(2)
+
+'second split breaking each currency into its own element
+Cells(2, 2) = renew1
+renew1 = Split(renew1, ",")
+
+'populating the second "cleaner" array down the second column
+For i = 0 To UBound(renew1)
+    Cells(11 + i, 2).Value = renew1(i)
+Next i
+
+y = Application.WorksheetFunction.CountA(ws.[therange])
+
+'This loop cleans up the array and populates the first two columns
+For i = 0 To y
+    holder = Cells(11 + i, 2)
+    holder = Replace(holder, "}", "")
+    pos = InStr(holder, ",")
+    holder1 = StrReverse(holder)
+    pos1 = InStr(holder1, ":")
+    Cells(11 + i, 1) = Mid(holder, pos + 2, 3)
+    Cells(11 + i, 2) = Mid(holder, 7, pos1)
+    
+Next i
+ 
+End Sub

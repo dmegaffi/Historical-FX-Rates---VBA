@@ -1,0 +1,33 @@
+Sub GetNum()
+'This sub pulls the info from exchangerateapi.io
+
+Dim hReq As Object, JSON As Dictionary
+Dim x As Variant
+Dim ws As Worksheet
+Set ws = Sheet1
+
+
+'create our URL string and pass the user entered information to it
+Dim strUrl As String
+    strUrl = "https://api.exchangeratesapi.io/" & ws.[Date] & "?" & "base=" & ws.[base]
+
+Set hReq = CreateObject("MSXML2.XMLHTTP")
+    With hReq
+        .Open "GET", strUrl, False
+        .Send
+    
+    End With
+
+'wrap the response in a JSON root tag "data" to count returned objects
+Dim response As String
+    response = "{""data"":" & hReq.ResponseText & "}"
+
+Set JSON = JsonConverter.ParseJson(response)
+Debug.Print JsonConverter.ConvertToJson(JSON)
+ 
+x = JsonConverter.ConvertToJson(JSON)
+
+'Debug.Print x
+Cells(1, 1) = x
+
+End Sub
